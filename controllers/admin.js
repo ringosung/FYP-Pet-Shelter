@@ -19,6 +19,7 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
+  const breed = req.body.breed;
   const image = req.file;
   const price = req.body.price;
   const description = req.body.description;
@@ -30,6 +31,7 @@ exports.postAddProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: title,
+        breed: breed,
         price: price,
         description: description
       },
@@ -48,6 +50,7 @@ exports.postAddProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: title,
+        breed: breed,
         price: price,
         description: description
       },
@@ -61,6 +64,7 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product({
     // _id: new mongoose.Types.ObjectId('5badf72403fd8b5be0366e81'),
     title: title,
+    breed: breed,
     price: price,
     description: description,
     imageUrl: imageUrl,
@@ -126,6 +130,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
+  const updatedBreed = req.body.breed;
   const updatedPrice = req.body.price;
   const image = req.file;
   const updatedDesc = req.body.description;
@@ -140,6 +145,7 @@ exports.postEditProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: updatedTitle,
+        breed: updatedBreed,
         price: updatedPrice,
         description: updatedDesc,
         _id: prodId
@@ -155,6 +161,7 @@ exports.postEditProduct = (req, res, next) => {
         return res.redirect('/');
       }
       product.title = updatedTitle;
+      product.breed = updatedBreed;
       product.price = updatedPrice;
       product.description = updatedDesc;
       if (image) {

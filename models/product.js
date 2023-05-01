@@ -7,8 +7,36 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
+  species: {
+    type: String,
+    required: true
+  },
+  breed: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true
+  },
+  location: {
+    type: String,
+    required: true
+  },
+  birthday: {
+    type: String,
+    required: true
+  },
   price: {
     type: Number,
+    required: true
+  },
+  desex:{
+    type: String,
+    required: true
+  },
+  vaccinate:{
+    type: String,
     required: true
   },
   description: {
@@ -23,6 +51,11 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  adoption: {
+    type: String,
+    required: true,
+    default: false
   }
 });
 

@@ -20,15 +20,15 @@
                     id="title" 
                     value="<% if (editing || hasError) { %><%= product.title %><% } %>">
             </div>
-            <!-- <div class="form-control">
-                <label for="imageUrl">Image URL</label>
+            <div class="form-control">
+                <label for="breed">Breed</label>
                 <input 
-                    class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '' %>"
+                    class="<%= validationErrors.find(e => e.param === 'breed') ? 'invalid' : '' %>"
                     type="text" 
-                    name="imageUrl" 
-                    id="imageUrl" 
-                    value="<% if (editing || hasError) { %><%= product.imageUrl %><% } %>">
-            </div> -->
+                    name="breed" 
+                    id="breed" 
+                    value="<% if (editing || hasError) { %><%= product.breed %><% } %>">
+            </div>
             <div class="form-control">
                 <label for="image">Image</label>
                 <input 
@@ -54,6 +54,7 @@
                     id="description" 
                     rows="5"><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
             </div>
+            
             <% if (editing) { %>
                 <input type="hidden" value="<%= product._id %>" name="productId">
             <% } %>
