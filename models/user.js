@@ -3,14 +3,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-
-  email: {
+  name: {
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  photo: String,
   password: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'admin'],
+    default: 'user'
   },
   resetToken: String,
   resetTokenExpiration: Date,
