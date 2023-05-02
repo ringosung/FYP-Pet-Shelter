@@ -123,6 +123,7 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const name = req.body.name
   const email = req.body.email;
+  const phone = req.body.phone;
   const password = req.body.password;
 
   const errors = validationResult(req);
@@ -135,6 +136,7 @@ exports.postSignup = (req, res, next) => {
       oldInput: {
         name: name,
         email: email,
+        phone: phone,
         password: password,
         confirmPassword: req.body.confirmPassword
       },
@@ -148,6 +150,7 @@ exports.postSignup = (req, res, next) => {
       const user = new User({
         name: name,
         email: email,
+        phone: phone,
         password: hashedPassword,
         cart: { items: [] }
       });

@@ -10,13 +10,17 @@
             <li class="main-header__item">
                 <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Pets</a>
             </li>
+            <li class="main-header__item">
+                <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">My Pets</a>
+            </li>
+            <li class="main-header__item">
+                <a class="<%= path === '/training' ? 'active' : '' %>" href="/training">Dog Training</a>
+            </li>
             <% if (isAuthenticated && user.role === 'admin')  { %>
                 <li class="main-header__item">
                     <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
                 </li>
-                <li class="main-header__item">
-                    <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">My Pets</a>
-                </li>
+
                 <li class="main-header__item">
                     <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Pets
                     </a>

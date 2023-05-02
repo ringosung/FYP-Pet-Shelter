@@ -29,4 +29,6 @@ router.get('/orders', isAuth, shopController.getOrders);
 
 router.get('/orders/:orderId', isAuth, shopController.getInvoice);
 
+router.get('/training', shopController.getTraining);
+
 module.exports = router;

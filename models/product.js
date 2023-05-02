@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { BOOLEAN } = require('sequelize');
 
 const Schema = mongoose.Schema;
 
@@ -9,7 +10,7 @@ const productSchema = new Schema({
   },
   species: {
     type: String,
-    required: true
+
   },
   breed: {
     type: String,
@@ -17,27 +18,29 @@ const productSchema = new Schema({
   },
   gender: {
     type: String,
-    required: true
+ 
   },
   location: {
     type: String,
-    required: true
+  
   },
   birthday: {
     type: String,
-    required: true
+ 
   },
   price: {
     type: Number,
     required: true
   },
   desex:{
-    type: String,
-    required: true
+    type: Boolean,
+    required: true,
+    default: false
   },
   vaccinate:{
-    type: String,
-    required: true
+    type: Boolean,
+    required: true,
+    default: false
   },
   description: {
     type: String,
@@ -53,7 +56,7 @@ const productSchema = new Schema({
     required: true
   },
   adoption: {
-    type: String,
+    type: Boolean,
     required: true,
     default: false
   }

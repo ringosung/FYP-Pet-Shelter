@@ -331,3 +331,13 @@ exports.getInvoice = (req, res, next) => {
     })
     .catch(err => next(err));
 };
+
+exports.getTraining = (req, res, next) => {
+      res.render('shop/training', {
+        pageTitle: 'training',
+        path: '/training'
+      });
+    }
+
+
+

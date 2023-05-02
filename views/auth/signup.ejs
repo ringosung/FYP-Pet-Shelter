@@ -30,6 +30,15 @@
                     value="<%= oldInput.email %>">
             </div>
             <div class="form-control">
+                <label for="phone">Contact No.</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'phone') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="phone" 
+                    id="phone" 
+                    value="<%= oldInput.phone %>">
+            </div>
+            <div class="form-control">
                 <label for="password">Password</label>
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
