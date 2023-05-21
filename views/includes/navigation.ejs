@@ -10,17 +10,26 @@
             <li class="main-header__item">
                 <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Pets</a>
             </li>
-            <li class="main-header__item">
-                <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">My Pets</a>
-            </li>
+            <% if (isAuthenticated && user.role === 'user')  { %>
+
+                <li class="main-header__item">
+                    <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">My Pets</a>
+                </li>
+            <% } %>
+
+            <% if (isAuthenticated)  { %>
+                <li class="main-header__item">
+                    <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Adoption</a>
+                </li>
+
+            <% } %>
+
             <li class="main-header__item">
                 <a class="<%= path === '/training' ? 'active' : '' %>" href="/training">Dog Training</a>
             </li>
-            <% if (isAuthenticated && user.role === 'admin')  { %>
-                <li class="main-header__item">
-                    <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
-                </li>
 
+
+            <% if (isAuthenticated && user.role === 'admin')  { %>
                 <li class="main-header__item">
                     <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Pets
                     </a>
@@ -30,8 +39,9 @@
                     </a>
                 </li>
             <% } %>
+
         </ul>
-        <ul class="main-header__item-list">
+        <ul class="main-header__item">
             <% if (!isAuthenticated) { %>
                 <li class="main-header__item">
                     <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
@@ -40,6 +50,9 @@
                     <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
                 </li>
             <% } else { %>
+                <li class="main-header__item">
+                   <a><%= user.name %> (<%= user.role%>)</a> 
+                </li>
                 <li class="main-header__item">
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">

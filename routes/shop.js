@@ -19,6 +19,12 @@ router.post('/cart', isAuth, shopController.postCart);
 
 router.post('/cart-delete-item', isAuth, shopController.postCartDeleteProduct);
 
+router.post('/cart-delete-item-admin', isAuth, shopController.postCartDeleteProductAdmin);
+
+router.post('/cart-approve-item-admin', isAuth, shopController.postApproveAdoption);
+
+router.get('/cart-approve-item-admin/:adoptionId/:userId', isAuth, shopController.getApproveAdoption);
+
 router.get('/checkout', isAuth, shopController.getCheckout);
 
 router.get('/checkout/success', shopController.getCheckoutSuccess);
@@ -31,4 +37,15 @@ router.get('/orders/:orderId', isAuth, shopController.getInvoice);
 
 router.get('/training', shopController.getTraining);
 
+// router.post('/approve/:productId', isAuth, shopController.postApprove)
+
 module.exports = router;
+
+// router.post(
+//     '/approve',
+//     [
+//       body('approve')
+//     ],
+//     isAuth,
+//     adminController.postEditProduct
+//   );

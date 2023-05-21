@@ -10,7 +10,6 @@
                 <% products.forEach(p => { %>
                     <li class="cart__item">
                         <h1><%= p.productId.title %></h1>
-                        <h2>Quantity: <%= p.quantity %></h2>
                     </li>
                 <% }) %>
             </ul>
@@ -18,7 +17,7 @@
                 <h2>Total: <%= totalSum %></h2>
             </div>
             <div class="centered">
-                <button id="order-btn" class="btn">ORDER</button>
+                <button id="order-btn" class="btn">Pay</button>
                 <script src="https://js.stripe.com/v3/"></script>
                 <script>
                     var stripe = Stripe('pk_test_51KxXkFDpSxXDL5wYuSOFEVD6nJ5Xwf8RhYKIZEhiI4SLKCBjqOGwxr88o8xYSwVcSySVhLuvBDTjsV6RFfEfygZV00dqgIFMmZ');

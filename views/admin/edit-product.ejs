@@ -21,6 +21,15 @@
                     value="<% if (editing || hasError) { %><%= product.title %><% } %>">
             </div>
             <div class="form-control">
+                <label for="breed">Species</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'species') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="species" 
+                    id="species" 
+                    value="<% if (editing || hasError) { %><%= product.species %><% } %>">
+            </div>
+            <div class="form-control">
                 <label for="breed">Breed</label>
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'breed') ? 'invalid' : '' %>"

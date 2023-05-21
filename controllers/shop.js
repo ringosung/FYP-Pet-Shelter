@@ -6,8 +6,11 @@ const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
 const Order = require('../models/order');
+const User = require('../models/user');
 
 const ITEMS_PER_PAGE = 2;
+
+
 
 exports.getProducts = async(req, res) => {
   const page = +req.query.page || 1;
@@ -15,8 +18,14 @@ exports.getProducts = async(req, res) => {
   let query = Product.find()
   if (req.query.title != null && req.query.title != '') {
     query = query.regex('title', new RegExp(req.query.title, 'i'))
-    console.log('print query' + query);
   }
+  if (req.query.species != null && req.query.species != '') {
+    query = query.regex('species', new RegExp(req.query.species, 'i'))
+  }
+  if (req.query.breed != null && req.query.breed != '') {
+    query = query.regex('breed', new RegExp(req.query.breed, 'i'))
+  }
+
 
   Product.find()
     .countDocuments()
@@ -100,24 +109,86 @@ exports.getIndex = (req, res, next) => {
     });
 };
 
+
 exports.getCart = (req, res, next) => {
-  req.user
+
+  if (req.user.role === 'admin') {
+    
+      let cartUserArray = []
+      User.find({}, async function(error, cartUser){
+        if (error) {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+        } 
+      
+        
+        cartUser.map(function(u){
+        if(u.cart.items.length > 0 ){
+          
+          u
+          .populate('cart.items.productId')
+          .execPopulate()
+          if(JSON.stringify(u.cart.items[0].approve) === "false"){
+            cartUserArray.push(u)
+          }
+          
+          console.log("cartUserArray " + cartUserArray);
+          
+              
+        } return cartUserArray;  
+        })
+      
+       setTimeout(function(){
+        
+        function flatten(arr){
+          var flat = [];
+          for (var i = 0; i< arr.length; i++){
+            flat = flat.concat(arr[i].cart.items);
+          }
+          return flat;
+        }
+
+        const products = flatten(cartUserArray)
+        
+        res.render('shop/cart', {
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: products,
+          users:cartUserArray
+        });
+       }, 100)
+      
+      
+      })
+
+}
+
+
+  else if (req.user.role === 'user') {
+    console.log(req.user);
+    req.user
     .populate('cart.items.productId')
     .execPopulate()
     .then(user => {
+      console.log(user.cart.items);
       const products = user.cart.items;
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
         products: products
       });
+      
     })
     .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
+  }
+
 };
+
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
@@ -150,6 +221,130 @@ exports.postCartDeleteProduct = (req, res, next) => {
     });
 };
 
+exports.postCartDeleteProductAdmin = async (req, res, next) => {
+  const prodId = req.body.productId;
+  const userId = req.body.userId;
+  let resultObj = {};
+  console.log(userId)
+  await User.findById(userId, function (err, result){
+    console.log("findById" + result);
+    resultObj = result;
+  })
+  console.log("resultObj " + resultObj);
+  resultObj
+  .removeFromCartAdmin(prodId)
+    .then(result => {
+      res.redirect('/cart');
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+    Order.find({ 'user.userId': req.user._id })
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orders',
+        pageTitle: 'Your Orders',
+        orders: orders
+      });
+    })
+  }
+
+  exports.getApproveAdoption = (req, res, next) => {
+
+    const userId = req.params.userId;
+    const prodId = req.params.adoptionId;
+    console.log("userId " + userId + " prodId " + prodId);
+    User.findById(userId).then(user => {
+      user.cart.items[0].approve = true;
+      console.log(user.cart.items[0].productId)
+      console.log(user.cart.items[0].approve)
+      user.save().then(result => {
+        res.redirect('/cart');
+      })
+    })
+
+
+    // let cartUserArray = []
+    // User.find({}, async function(error, cartUser){
+    //   if (error) {
+    //     const error = new Error(err);
+    //     error.httpStatusCode = 500;
+    //     return next(error);
+    //   } 
+    
+      
+    //   cartUser.map(function(u){
+    //   if(u.cart.items.length > 0 ){
+        
+    //     u
+    //     .populate('cart.items.productId')
+    //     .execPopulate()
+    //     if(JSON.stringify(u.cart.items[0].approve) === "false"){
+    //       cartUserArray.push(u)
+    //     }
+        
+    //     console.log("cartUserArray " + cartUserArray);
+        
+            
+    //   } return cartUserArray;  
+    //   })
+
+
+    // User.findById(userId)
+    //   .then(product => {
+    //     if (!product) {
+    //       return res.redirect('/');
+    //     }
+    //     res.render('admin/edit-product', {
+    //       pageTitle: 'Edit Product',
+    //       path: '/admin/edit-product',
+    //       editing: editMode,
+    //       product: product,
+    //       hasError: false,
+    //       errorMessage: null,
+    //       validationErrors: []
+    //     });
+    //   })
+    //   .catch(err => {
+    //     const error = new Error(err);
+    //     error.httpStatusCode = 500;
+    //     return next(error);
+    //   });
+  };
+  
+  exports.postApproveAdoption = (req, res, next) => {
+    const prodId = req.body.productId;
+    const updatedTitle = req.body.title;
+    const updatedSpecies = req.body.species;
+    const updatedBreed = req.body.breed;
+    const updatedPrice = req.body.price;
+    const image = req.file;
+    const updatedDesc = req.body.description;
+  
+    const errors = validationResult(req);
+  
+    if (!errors.isEmpty()) {
+      return res.status(422).render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: true,
+        hasError: true,
+        product: {
+          title: updatedTitle,
+          species: updatedSpecies,
+          breed: updatedBreed,
+          price: updatedPrice,
+          description: updatedDesc,
+          _id: prodId
+        },
+        errorMessage: errors.array()[0].msg,
+        validationErrors: errors.array()
+      });
+    }
+  }
+
 exports.getCheckout = (req, res, next) => {
   let products;
   let total = 0;
@@ -170,7 +365,7 @@ exports.getCheckout = (req, res, next) => {
             name: p.productId.title,
             description: p.productId.description,
             amount: p.productId.price * 100,
-            currency: 'usd',
+            currency: 'hkd',
             quantity: p.quantity
           };
         }),
@@ -314,20 +509,7 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.fontSize(20).text('Total Price: $' + totalPrice);
 
       pdfDoc.end();
-      // fs.readFile(invoicePath, (err, data) => {
-      //   if (err) {
-      //     return next(err);
-      //   }
-      //   res.setHeader('Content-Type', 'application/pdf');
-      //   res.setHeader(
-      //     'Content-Disposition',
-      //     'inline; filename="' + invoiceName + '"'
-      //   );
-      //   res.send(data);
-      // });
-      // const file = fs.createReadStream(invoicePath);
 
-      // file.pipe(res);
     })
     .catch(err => next(err));
 };

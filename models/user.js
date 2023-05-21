@@ -35,7 +35,12 @@ const userSchema = new Schema({
           ref: 'Product',
           required: true
         },
-        quantity: { type: Number, required: true }
+        quantity: { type: Number, required: true },
+        approve: {
+          type: Boolean,
+          default: false,
+          required: true
+        }
       }
     ]
   }
@@ -71,6 +76,15 @@ userSchema.methods.removeFromCart = function(productId) {
   this.cart.items = updatedCartItems;
   return this.save();
 };
+
+userSchema.methods.removeFromCartAdmin = function(productId) {
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.productId.toString() !== productId.toString();
+  });
+  this.cart.items = updatedCartItems;
+  return this.save();
+};
+
 
 userSchema.methods.clearCart = function() {
   this.cart = { items: [] };
