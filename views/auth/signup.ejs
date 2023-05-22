@@ -1,63 +1,93 @@
 <%- include('../includes/head.ejs') %>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/assets/style.css">
     <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/auth.css">
+    <!-- <link rel="stylesheet" href="/css/auth.css"> -->
 </head>
 
 <body>
    <%- include('../includes/navigation.ejs') %>
 
     <main>
+        <div class="register-photo">
+            <div class="form-container">
+                <div class="image-holder"></div>
         <% if (errorMessage) { %>
             <div class="user-message user-message--error"><%= errorMessage %></div>
         <% } %>
-        <form class="login-form" action="/signup" method="POST" novalidate>
+        
+        <form action="/signup" method="POST" novalidate>
+            <h2 class="text-center"><strong>Create</strong> an account.</h2>
+            <div class="form-group">
             <div class="form-control">
-                <label for="name">Name</label>
+                
+                <!-- <label for="name">Name</label> -->
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid' : '' %>"
                     type="name" 
                     name="name" 
                     id="name" 
-                    value="<%= oldInput.name %>">
-            </div>
+                    value="<%= oldInput.name %>"
+                    placeholder="Name">
+            </div></div>
+            <div class="form-group">
             <div class="form-control">
-                <label for="email">E-Mail</label>
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
                     type="email" 
                     name="email" 
                     id="email" 
-                    value="<%= oldInput.email %>">
-            </div>
+                    value="<%= oldInput.email %>"
+                    placeholder="Email">
+            </div></div>
+            <div class="form-group">
             <div class="form-control">
-                <label for="phone">Contact No.</label>
+                
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'phone') ? 'invalid' : '' %>"
                     type="number" 
                     name="phone" 
                     id="phone" 
-                    value="<%= oldInput.phone %>">
-            </div>
+                    value="<%= oldInput.phone %>"
+                    placeholder="Phone no.">
+            </div></div>
+            <div class="form-group">
             <div class="form-control">
-                <label for="password">Password</label>
+                
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
                     type="password" 
                     name="password" 
                     id="password" 
-                    value="<%= oldInput.password %>">
-            </div>
+                    value="<%= oldInput.password %>"
+                    placeholder="Password">
+            </div></div>
+            <div class="form-group">
             <div class="form-control">
-                <label for="confirmPassword">Confirm Password</label>
+            
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>"
                     type="password" 
                     name="confirmPassword" 
                     id="confirmPassword" 
-                    value="<%= oldInput.confirmPassword %>">
-            </div>
+                    value="<%= oldInput.confirmPassword %>"
+                    placeholder="Confirm Password">
+            </div></div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit">Signup</button>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Sign Up</button></div><a href="/login" class="already">You already have an account? Login here.</a></form>
         </form>
+    </div>
+</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     </main>
+
 <%- include('../includes/end.ejs') %>
+
+
+
+
