@@ -23,11 +23,24 @@
                                         <%= product.breed %>
                                     </h1>
                                 </div>
-
+                                <div>
+                                    <% const bday = new Date(product.birthday) %>
+                                    <% const tday = Date.now() %>
+                                    <% const tmday = new Date() %>
+                                    <% const month_diff = tday - bday.getTime() %>
+                                    <% const age_dt = new Date(month_diff) %>
+                                    <% const year = age_dt.getUTCFullYear() %>
+                                    <% const age = Math.abs(year - 1970) %>
+                                    <% if (age == 0) { %>
+                                    <% const ageMonth = Math.abs(tmday.getMonth() - bday.getMonth())%>
+                                    <h1 class="product__breed"><%= ageMonth %> months</h1>
+                                    <% } else { %>
+                                        <h1 class="product__breed"><%= age %> year-old</h1>
+                                    <% } %>
+                                    <h1 class="product__breed"><%= product.gender %></h1>
+                                </div>
                                 <div class="card__content">
-                                    <h2 class="product__price">$
-                                        <%= product.price %>
-                                    </h2>
+
                                     <p class="product__description">
                                         <%= product.description %>
                                     </p>

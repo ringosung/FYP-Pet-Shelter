@@ -6,6 +6,8 @@ const { validationResult } = require('express-validator/check');
 
 const Product = require('../models/product');
 
+
+
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -21,9 +23,12 @@ exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const species = req.body.species;
   const breed = req.body.breed;
+  const gender = req.body.gender;
+  const birthday = req.body.birthday;
   const image = req.file;
   const price = req.body.price;
   const description = req.body.description;
+  console.log("add pet" + gender);
   if (!image) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -34,6 +39,8 @@ exports.postAddProduct = (req, res, next) => {
         title: title,
         species: species,
         breed: breed,
+        gender: gender,
+        birthday: birthday,
         price: price,
         description: description
       },
@@ -54,6 +61,8 @@ exports.postAddProduct = (req, res, next) => {
         title: title,
         species: species,
         breed: breed,
+        gender: gender,
+        birthday: birthday,
         price: price,
         description: description
       },
@@ -69,6 +78,8 @@ exports.postAddProduct = (req, res, next) => {
     title: title,
     species: species,
     breed: breed,
+    gender: gender,
+    birthday: birthday,
     price: price,
     description: description,
     imageUrl: imageUrl,
@@ -82,21 +93,7 @@ exports.postAddProduct = (req, res, next) => {
       res.redirect('/admin/products');
     })
     .catch(err => {
-      // return res.status(500).render('admin/edit-product', {
-      //   pageTitle: 'Add Product',
-      //   path: '/admin/add-product',
-      //   editing: false,
-      //   hasError: true,
-      //   product: {
-      //     title: title,
-      //     imageUrl: imageUrl,
-      //     price: price,
-      //     description: description
-      //   },
-      //   errorMessage: 'Database operation failed, please try again.',
-      //   validationErrors: []
-      // });
-      // res.redirect('/500');
+
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -136,6 +133,8 @@ exports.postEditProduct = (req, res, next) => {
   const updatedTitle = req.body.title;
   const updatedSpecies = req.body.species;
   const updatedBreed = req.body.breed;
+  const updatedGender = req.body.gender;
+  const updatedBirthday = req.body.birthday;
   const updatedPrice = req.body.price;
   const image = req.file;
   const updatedDesc = req.body.description;
@@ -152,6 +151,8 @@ exports.postEditProduct = (req, res, next) => {
         title: updatedTitle,
         species: updatedSpecies,
         breed: updatedBreed,
+        gender: updatedGender,
+        birthday: updatedBirthday,
         price: updatedPrice,
         description: updatedDesc,
         _id: prodId
@@ -167,6 +168,8 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.species = updatedSpecies;
       product.breed = updatedBreed;
+      product.gender = updatedGender;
+      product.birthday = updatedBirthday;
       product.price = updatedPrice;
       product.description = updatedDesc;
       if (image) {

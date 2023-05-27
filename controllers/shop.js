@@ -4,11 +4,13 @@ const stripe = require('stripe')('sk_test_51KxXkFDpSxXDL5wY7GA5RdhNlUlkH8TgMFhLq
 
 const PDFDocument = require('pdfkit');
 
+
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 const User = require('../models/user');
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 4;
 
 
 
@@ -266,52 +268,6 @@ exports.postCartDeleteProductAdmin = async (req, res, next) => {
     })
 
 
-    // let cartUserArray = []
-    // User.find({}, async function(error, cartUser){
-    //   if (error) {
-    //     const error = new Error(err);
-    //     error.httpStatusCode = 500;
-    //     return next(error);
-    //   } 
-    
-      
-    //   cartUser.map(function(u){
-    //   if(u.cart.items.length > 0 ){
-        
-    //     u
-    //     .populate('cart.items.productId')
-    //     .execPopulate()
-    //     if(JSON.stringify(u.cart.items[0].approve) === "false"){
-    //       cartUserArray.push(u)
-    //     }
-        
-    //     console.log("cartUserArray " + cartUserArray);
-        
-            
-    //   } return cartUserArray;  
-    //   })
-
-
-    // User.findById(userId)
-    //   .then(product => {
-    //     if (!product) {
-    //       return res.redirect('/');
-    //     }
-    //     res.render('admin/edit-product', {
-    //       pageTitle: 'Edit Product',
-    //       path: '/admin/edit-product',
-    //       editing: editMode,
-    //       product: product,
-    //       hasError: false,
-    //       errorMessage: null,
-    //       validationErrors: []
-    //     });
-    //   })
-    //   .catch(err => {
-    //     const error = new Error(err);
-    //     error.httpStatusCode = 500;
-    //     return next(error);
-    //   });
   };
   
   exports.postApproveAdoption = (req, res, next) => {
@@ -319,6 +275,8 @@ exports.postCartDeleteProductAdmin = async (req, res, next) => {
     const updatedTitle = req.body.title;
     const updatedSpecies = req.body.species;
     const updatedBreed = req.body.breed;
+    const updatedGender = req.body.gender;
+    const updatedbirthday = req.body.birthday;
     const updatedPrice = req.body.price;
     const image = req.file;
     const updatedDesc = req.body.description;
@@ -335,6 +293,8 @@ exports.postCartDeleteProductAdmin = async (req, res, next) => {
           title: updatedTitle,
           species: updatedSpecies,
           breed: updatedBreed,
+          gender: updatedGender,
+          birthday: updatedbirthday,
           price: updatedPrice,
           description: updatedDesc,
           _id: prodId
@@ -425,8 +385,10 @@ exports.postOrder = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items.map(i => {
+        i.adoption = true;
         return { quantity: i.quantity, product: { ...i.productId._doc } };
       });
+
       const order = new Order({
         user: {
           email: req.user.email,

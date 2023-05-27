@@ -17,6 +17,21 @@
                         <div class="col-md-6">
                             <div class="small mb-1"><%= product.breed %></div>
                             <h1 class="display-5 fw-bolder"><%= product.title %></h1>
+                            <div>
+                                <% const bday = new Date(product.birthday) %>
+                                <% const tday = Date.now() %>
+                                <% const tmday = new Date() %>
+                                <% const month_diff = tday - bday.getTime() %>
+                                <% const age_dt = new Date(month_diff) %>
+                                <% const year = age_dt.getUTCFullYear() %>
+                                <% const age = Math.abs(year - 1970) %>
+                                <% if (age == 0) { %>
+                                <% const ageMonth = Math.abs(tmday.getMonth() - bday.getMonth())%>
+                                <h1 class="product__breed"><%= ageMonth %> months</h1>
+                                <% } else { %>
+                                    <h1 class="product__breed"><%= age %> year-old</h1>
+                                <% } %>
+                            </div>
 
                             <p class="lead"><%= product.description %></p>
                             <div>

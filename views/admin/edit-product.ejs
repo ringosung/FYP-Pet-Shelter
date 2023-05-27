@@ -39,6 +39,22 @@
                     value="<% if (editing || hasError) { %><%= product.breed %><% } %>">
             </div>
             <div class="form-control">
+                <label for="gender">Gender</label>
+                <select class="<%= validationErrors.find(e => e.param === 'gender') ? 'invalid' : '' %>" name="gender" id="gender">
+                    <option value="<% if (editing || hasError) { %><%= product.gender %><% } else { %><%= "male" %> <% } %>">Male</option>
+                    <option value="<% if (editing || hasError) { %><%= product.gender %><% } else { %><%= "female" %> <% } %>">Female</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="birthday">Birthday</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'birthday') ? 'invalid' : '' %>"
+                    type="date" 
+                    name="birthday" 
+                    id="birthday" 
+                    value="<% if (editing || hasError) { %><%= product.birthday %><% } %>">
+            </div>
+            <div class="form-control">
                 <label for="image">Image</label>
                 <input 
                     type="file" 
