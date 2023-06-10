@@ -10,7 +10,7 @@ const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
-    pageTitle: 'Add Product',
+    pageTitle: 'Add Pet',
     path: '/admin/add-product',
     editing: false,
     hasError: false,
@@ -32,7 +32,7 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   if (!image) {
     return res.status(422).render('admin/edit-product', {
-      pageTitle: 'Add Product',
+      pageTitle: 'Add Pet',
       path: '/admin/add-product',
       editing: false,
       hasError: true,
@@ -206,7 +206,7 @@ exports.getProducts = (req, res, next) => {
       console.log(products);
       res.render('admin/products', {
         prods: products,
-        pageTitle: 'Admin Products',
+        pageTitle: 'Admin Pets',
         path: '/admin/products'
       });
     })
@@ -222,7 +222,7 @@ exports.deleteProduct = (req, res, next) => {
   Product.findById(prodId)
     .then(product => {
       if (!product) {
-        return next(new Error('Product not found.'));
+        return next(new Error('Pet not found.'));
       }
       fileHelper.deleteFile(product.imageUrl);
       return Product.deleteOne({ _id: prodId});
@@ -232,6 +232,6 @@ exports.deleteProduct = (req, res, next) => {
       res.status(200).json({ message: 'Success!' });
     })
     .catch(err => {
-      res.status(500).json({ message: 'Deleting product failed.' });
+      res.status(500).json({ message: 'Deleting pet failed.' });
     });
 };

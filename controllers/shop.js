@@ -97,7 +97,7 @@ exports.getFinderProducts = async(req, res) => {
         const products = await query.exec()
         res.render('shop/pet-finder-product-list', {
         prods: products,
-        pageTitle: 'Products',
+        pageTitle: 'Pets',
         path: '/Pet Finder',
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems,
