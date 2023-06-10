@@ -10,11 +10,43 @@
             <% } else { %>
                 <ul class="orders">
                     <% orders.forEach(order => { %>
+                        
                         <li class="orders__item">
-                            <h1>Order - # <%= order._id %> - <a href="/orders/<%= order._id %>">Invoice</a></h1>
+                            <h1>My Pet - - </h1>
                             <ul class="orders__products">
                                 <% order.products.forEach(p => { %>
-                                    <li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>)</li>
+                                    <header class="card__header">
+                                        <h1 class="p.product__title">
+                                            Name: <%= p.product.title %>
+                                            
+                                        </h1>
+                                        <h1>
+                                            Gender: <%= p.product.gender %>
+                                        </h1>
+                                        <div>
+                                            <% const bday = new Date(p.product.birthday) %>
+                                            <% const tday = Date.now() %>
+                                            <% const tmday = new Date() %>
+                                            <% const month_diff = tday - bday.getTime() %>
+                                            <% const age_dt = new Date(month_diff) %>
+                                            <% const year = age_dt.getUTCFullYear() %>
+                                            <% const age = Math.abs(year - 1970) %>
+                                            <% if (age == 0) { %>
+                                            <% const ageMonth = Math.abs(tmday.getMonth() - bday.getMonth())%>
+                                            <h1 class="product__breed">Age: <%= ageMonth %> months</h1>
+                                            <% } else { %>
+                                                <h1 class="product__breed">Age: <%= age %> year-old</h1>
+                                            <% } %>
+                                        </div>
+
+                                        <h1>
+                                            <a href="/orders/<%= order._id %>">Adoption Certificate</a>
+                                        </h1>
+                                        
+                                    </header>
+                                    <div class="card__image">
+                                        <img src="/<%= p.product.imageUrl %>" alt="<%= p.product.title %>">
+                                    </div>
                                 <% }); %>
                             </ul>
                         </li>

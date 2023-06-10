@@ -24,11 +24,12 @@ exports.postAddProduct = (req, res, next) => {
   const species = req.body.species;
   const breed = req.body.breed;
   const gender = req.body.gender;
+  const personality = req.body.personality;
   const birthday = req.body.birthday;
   const image = req.file;
   const price = req.body.price;
+  const desex = req.body.desex;
   const description = req.body.description;
-  console.log("add pet" + gender);
   if (!image) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -40,8 +41,10 @@ exports.postAddProduct = (req, res, next) => {
         species: species,
         breed: breed,
         gender: gender,
+        personality: personality,
         birthday: birthday,
         price: price,
+        desex: desex,
         description: description
       },
       errorMessage: 'Attached file is not an image.',
@@ -62,8 +65,10 @@ exports.postAddProduct = (req, res, next) => {
         species: species,
         breed: breed,
         gender: gender,
+        personality: personality,
         birthday: birthday,
         price: price,
+        desex: desex,
         description: description
       },
       errorMessage: errors.array()[0].msg,
@@ -79,8 +84,10 @@ exports.postAddProduct = (req, res, next) => {
     species: species,
     breed: breed,
     gender: gender,
+    personality: personality,
     birthday: birthday,
     price: price,
+    desex: desex,
     description: description,
     imageUrl: imageUrl,
     userId: req.user
@@ -134,6 +141,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedSpecies = req.body.species;
   const updatedBreed = req.body.breed;
   const updatedGender = req.body.gender;
+  const updatedPersonality = req.body.personality;
   const updatedBirthday = req.body.birthday;
   const updatedPrice = req.body.price;
   const image = req.file;
@@ -152,6 +160,7 @@ exports.postEditProduct = (req, res, next) => {
         species: updatedSpecies,
         breed: updatedBreed,
         gender: updatedGender,
+        personality: updatedPersonality,
         birthday: updatedBirthday,
         price: updatedPrice,
         description: updatedDesc,
@@ -169,6 +178,7 @@ exports.postEditProduct = (req, res, next) => {
       product.species = updatedSpecies;
       product.breed = updatedBreed;
       product.gender = updatedGender;
+      product.personality = updatedPersonality;
       product.birthday = updatedBirthday;
       product.price = updatedPrice;
       product.description = updatedDesc;

@@ -20,6 +20,10 @@ const productSchema = new Schema({
     type: String,
  
   },
+  personality: {
+    type: String,
+ 
+  },
   location: {
     type: String,
   
@@ -32,16 +36,16 @@ const productSchema = new Schema({
     type: Number,
     required: true
   },
-  desex:{
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  vaccinate:{
-    type: Boolean,
-    required: true,
-    default: false
-  },
+  // desex:{
+  //   type: String,
+  //   required: true,
+  //   default: false
+  // },
+  // vaccinate:{
+  //   type: String,
+  //   required: true,
+  //   default: false
+  // },
   description: {
     type: String,
     required: true

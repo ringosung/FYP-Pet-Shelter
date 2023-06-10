@@ -1,0 +1,46 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/pet-finder.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+              <div class="app">
+                <h1>Pet Finder</h1>
+                <div class="quiz">
+                    <h2 id="question">Question here</h2>
+                    <div id="answer-buttons">
+
+                      
+                    </div>
+                </div>
+                <button id="btn-next"></button>
+                <form action="/finderproducts" method="GET">
+
+                  <div class="form-row">
+                    <div class="form-item">
+                      <input id="speciesQuiz" type="hidden" name="species" value="<%= searchOptions.species %>">
+                    </div>
+                  <div class="form-row">
+                    <div class="form-item">
+
+                      <input type="hidden" name="breed" value="<%= searchOptions.breed %>">
+                    </div>
+                    <div class="form-item">
+
+                      <input id="personalityQuiz" type="hidden" name="personality" value="<%= searchOptions.personality %>">
+                    </div>
+        
+                  </div>
+                  <div class="form-row form-row-end">
+                    <button id="btn-submit" class="pet-finder-match-btn" type="submit">Meet your new BFF matches!</button>
+                  </div>
+              </form>
+            </div>
+                
+
+            </main>
+            <%- include('../includes/end.ejs') %>
+            <script src="/js/script.js"></script>

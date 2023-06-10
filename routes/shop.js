@@ -11,6 +11,8 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
+router.get('/finderproducts', shopController.getFinderProducts);
+
 router.get('/products/:productId', shopController.getProduct);
 
 router.get('/cart', isAuth, shopController.getCart);
@@ -36,6 +38,10 @@ router.get('/orders', isAuth, shopController.getOrders);
 router.get('/orders/:orderId', isAuth, shopController.getInvoice);
 
 router.get('/training', shopController.getTraining);
+
+router.get('/adoption-support', shopController.getSupport);
+
+router.get('/pet-finder', shopController.petFinder);
 
 // router.post('/approve/:productId', isAuth, shopController.postApprove)
 

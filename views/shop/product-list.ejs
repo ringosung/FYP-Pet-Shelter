@@ -23,6 +23,10 @@
                           <label>Breed</label>
                           <input type="text" name="breed" value="<%= searchOptions.breed %>">
                         </div>
+                        <div class="form-item">
+                            
+                            <input type="hidden" name="personality" value="<%= searchOptions.personality %>">
+                          </div>
             
                       </div>
                       <div class="form-row form-row-end">
@@ -32,6 +36,7 @@
                 <% if (prods.length > 0) { %>
                     <div class="grid">
                         <% for (let product of prods) { %>
+                            <% if (product.adoption == false) { %>
                             <article class="card product-item">
                                 <header class="card__header">
                                     <h1 class="product__title">
@@ -58,6 +63,7 @@
                                 </div>
                             </article>
                             <% } %>
+                         <% } %>
                     </div>
                     <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
                     <% } else { %>

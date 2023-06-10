@@ -9,12 +9,22 @@
                 <% if (isAuthenticated && user.role === 'admin')  { %>
                     <ul class="cart__item-list">
                         <% users.forEach(u => { %>
-                            
-                            <h1>user id <%- u.id %></h1>
-                            <h1>cart productid: <%- u.cart.items[0].productId._id %></h1>
-                            
-                                <li class="cart__item">
 
+                            <div class="card__content">
+                                <li class="cart__item">
+                                    
+                                    <ul>
+                                        <% u.cart.items.forEach(c => { %>
+                                        <b> Application No: <%- c.productId._id %></b>
+                                        <li>Apply for: <%- c.productId.title %></li>
+                                        <li>User Name: <%- u.name %></li>
+                                        <li>Contact: <%- u.phone %></li>
+                                        <li>Email: <%- u.email %></li>
+                                        <div class="card__image">
+                                            <img height="400" src="/<%= u.cart.items[0].productId.imageUrl %>" alt="<%= u.cart.items[0].productId.title %> %>">
+                                        </div>
+                                        
+                                    
                                     <form action="/cart-delete-item-admin" method="POST">
                                         <input type="hidden" value="<%- u.cart.items[0].productId._id %>" name="productId">
                                         <input type="hidden" value="<%- u.id %>" name="userId">
@@ -22,8 +32,10 @@
                                         <button class="btn danger" type="submit">Reject</button>
                                         <a href="/cart-approve-item-admin/<%- u.cart.items[0].productId._id %>/<%- u.id %>" class="btn">Approve</a>
                                     </form>
+                                </ul>
                                 </li>
-                            
+                            </div>
+                            <% }) %>
                         <% }) %>
                         
                     </ul>
@@ -34,26 +46,42 @@
 
                 <ul class="cart__item-list">
                     <% products.forEach(p => { %>
-                        <li class="cart__item">
-                            <h1><%= p.productId.title %></h1>
-                            <form action="/cart-delete-item" method="POST">
-                                <input type="hidden" value="<%= p.productId._id %>" name="productId">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                <button class="btn danger" type="submit">Delete</button>
-                                <% if (p.approve === true) { %>
-                                <a class="btn" href="/checkout">Complete the payment</a>
-                                <% } else { %>
+                        
+                        
+                            <li class="cart__item">
+                            
+                                <ul>
+                                
+                                <h1><%= p.productId.title %></h1>
+                                
+                                <div class="card__content">
+                                    <div class="card__image">
+                                    <img height="400" src="/<%= p.productId.imageUrl %>" alt="<%= p.productId.title %>">
+                                </div>
+                                <div class="centered">
+                                <form action="/cart-delete-item" method="POST">
+                                    <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <button class="btn danger" type="submit">Delete</button>
+                                    <% if (p.approve === true) { %>
+                                    <a class="btn" href="/checkout">Complete the payment</a>
+                                    <% } else { %>
+                        
+                                        <a class="btn" >Waiting for approval</a>
+                                        
+                                    <% } %>
+                                </form>
+                                </div>
+                            </div>
+                                
+                            </li>
+                        </ul>
                     
-                                    <a class="btn" >Waiting for approval</a>
-                                    
-                                <% } %>
-                            </form>
-                        </li>
                     <% }) %>
                 </ul>
                 <hr>
-                <div class="centered">
-                </div>
+
+
                 <% } %>
                 
             <% } else { %>

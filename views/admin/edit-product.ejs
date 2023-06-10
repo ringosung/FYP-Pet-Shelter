@@ -41,10 +41,31 @@
             <div class="form-control">
                 <label for="gender">Gender</label>
                 <select class="<%= validationErrors.find(e => e.param === 'gender') ? 'invalid' : '' %>" name="gender" id="gender">
-                    <option value="<% if (editing || hasError) { %><%= product.gender %><% } else { %><%= "male" %> <% } %>">Male</option>
-                    <option value="<% if (editing || hasError) { %><%= product.gender %><% } else { %><%= "female" %> <% } %>">Female</option>
+                    <% if (editing || hasError) { %>
+                    <option value=<%= product.gender %>><%= product.gender %></option>
+                    <% } %>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             </div>
+
+            <div class="form-control">
+                <label for="personality">Personality</label>
+                <select class="<%= validationErrors.find(e => e.param === 'personality') ? 'invalid' : '' %>" name="personality" id="personality">
+                    <% if (editing || hasError) { %>
+                    <option value=<%= product.personality %>><%= product.personality %></option>
+                    <% } %>
+                    <option value="Sociable">Sociable</option>
+                    <option value="Playful">Playful</option>
+                    <option value="Energetic">Energetic</option>
+                    <option value="Curious">Curious</option>
+                    <option value="Introverted">Introverted</option>
+                    <option value="Loyal">Loyal</option>
+                    <option value="Talkative">Talkative</option>
+                </select>
+            </div>
+
+
             <div class="form-control">
                 <label for="birthday">Birthday</label>
                 <input 
@@ -52,7 +73,7 @@
                     type="date" 
                     name="birthday" 
                     id="birthday" 
-                    value="<% if (editing || hasError) { %><%= product.birthday %><% } %>">
+                    value="<% if (editing || hasError) { %><%= product.birthday.toISOString().split('T')[0] %><% } %>">
             </div>
             <div class="form-control">
                 <label for="image">Image</label>

@@ -45,7 +45,15 @@ router.post(
       .isString()
       .isLength({ min: 3 })
       .trim(),
+      body('species')
+      .isString()
+      .isLength({ min: 3 })
+      .trim(),
       body('breed')
+      .isString()
+      .isLength({ min: 3 })
+      .trim(),
+      body('gender')
       .isString()
       .isLength({ min: 3 })
       .trim(),

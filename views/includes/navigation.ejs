@@ -10,6 +10,13 @@
             <li class="main-header__item">
                 <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Pets</a>
             </li>
+
+            <li class="main-header__item">
+                <a class="<%= path === '/pet-finder' ? 'active' : '' %>" href="/pet-finder">Pet Finder</a>
+                <li class="main-header__item">
+                    <a class="<%= path === '/adoption-support' ? 'active' : '' %>" href="/adoption-support">Adoption Support</a>
+                </li>
+            </li>
             <% if (isAuthenticated && user.role === 'user')  { %>
 
                 <li class="main-header__item">
@@ -25,7 +32,7 @@
             <% } %>
 
             <li class="main-header__item">
-                <a class="<%= path === '/training' ? 'active' : '' %>" href="/training">Dog Training</a>
+                <a class="<%= path === '/training' ? 'active' : '' %>" href="/training">Pet Training</a>
             </li>
 
 
@@ -72,6 +79,12 @@
         <li class="mobile-nav__item">
             <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Pets</a>
         </li>
+        <li class="mobile-nav__item">
+            <a class="<%= path === '/pet-finder' ? 'active' : '' %>" href="/pet-finder">Pet Finder</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= path === '/adoption-support' ? 'active' : '' %>" href="/adoption-support">Adoption Support</a>
+        </li>
         <% if (isAuthenticated && user.role === 'user')  { %>
 
             <li class="mobile-nav__item">
@@ -99,7 +112,7 @@
             <li class="mobile-nav__item">
                 <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
             </li>
-            <li class="mobile-nav__item">
+            <li class="article--button js-tracked-nav-item">
                 <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
             </li>
         <% } else { %>

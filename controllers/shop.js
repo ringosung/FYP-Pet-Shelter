@@ -27,6 +27,9 @@ exports.getProducts = async(req, res) => {
   if (req.query.breed != null && req.query.breed != '') {
     query = query.regex('breed', new RegExp(req.query.breed, 'i'))
   }
+  if (req.query.personality != null && req.query.personality != '') {
+    query = query.regex('personality', new RegExp(req.query.personality, 'i'))
+  }
 
 
   Product.find()
@@ -45,6 +48,57 @@ exports.getProducts = async(req, res) => {
         prods: products,
         pageTitle: 'Products',
         path: '/products',
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+        searchOptions: req.query
+      });
+    }
+     catch {
+      (err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+     
+    });
+}};
+
+exports.getFinderProducts = async(req, res) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+  let query = Product.find()
+  if (req.query.title != null && req.query.title != '') {
+    query = query.regex('title', new RegExp(req.query.title, 'i'))
+  }
+  if (req.query.species != null && req.query.species != '') {
+    query = query.regex('species', new RegExp(req.query.species, 'i'))
+  }
+  if (req.query.breed != null && req.query.breed != '') {
+    query = query.regex('breed', new RegExp(req.query.breed, 'i'))
+  }
+  if (req.query.personality != null && req.query.personality != '') {
+    query = query.regex('personality', new RegExp(req.query.personality, 'i'))
+  }
+
+
+  Product.find()
+    .countDocuments()
+    .then(numProducts => {
+      totalItems = numProducts;
+      
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
+    
+    try{
+        const products = await query.exec()
+        res.render('shop/pet-finder-product-list', {
+        prods: products,
+        pageTitle: 'Products',
+        path: '/Pet Finder',
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems,
         hasPreviousPage: page > 1,
@@ -276,10 +330,12 @@ exports.postCartDeleteProductAdmin = async (req, res, next) => {
     const updatedSpecies = req.body.species;
     const updatedBreed = req.body.breed;
     const updatedGender = req.body.gender;
+    const updatedPersonality = req.body.personality;
     const updatedbirthday = req.body.birthday;
     const updatedPrice = req.body.price;
     const image = req.file;
     const updatedDesc = req.body.description;
+    
   
     const errors = validationResult(req);
   
@@ -294,6 +350,7 @@ exports.postCartDeleteProductAdmin = async (req, res, next) => {
           species: updatedSpecies,
           breed: updatedBreed,
           gender: updatedGender,
+          personality: updatedPersonality,
           birthday: updatedbirthday,
           price: updatedPrice,
           description: updatedDesc,
@@ -355,6 +412,10 @@ exports.getCheckoutSuccess = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items.map(i => {
+        Product.findById(i.productId).then(product => {
+          product.adoption = true;
+          product.save();
+        })
         return { quantity: i.quantity, product: { ...i.productId._doc } };
       });
       const order = new Order({
@@ -385,7 +446,6 @@ exports.postOrder = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items.map(i => {
-        i.adoption = true;
         return { quantity: i.quantity, product: { ...i.productId._doc } };
       });
 
@@ -437,7 +497,7 @@ exports.getInvoice = (req, res, next) => {
       if (order.user.userId.toString() !== req.user._id.toString()) {
         return next(new Error('Unauthorized'));
       }
-      const invoiceName = 'invoice-' + orderId + '.pdf';
+      const invoiceName = 'Certificate-' + orderId + '.pdf';
       const invoicePath = path.join('data', 'invoices', invoiceName);
 
       const pdfDoc = new PDFDocument();
@@ -449,7 +509,7 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.pipe(fs.createWriteStream(invoicePath));
       pdfDoc.pipe(res);
 
-      pdfDoc.fontSize(26).text('Invoice', {
+      pdfDoc.fontSize(26).text('Certificate', {
         underline: true
       });
       pdfDoc.text('-----------------------');
@@ -457,18 +517,13 @@ exports.getInvoice = (req, res, next) => {
       order.products.forEach(prod => {
         totalPrice += prod.quantity * prod.product.price;
         pdfDoc
-          .fontSize(14)
-          .text(
-            prod.product.title +
-              ' - ' +
-              prod.quantity +
-              ' x ' +
-              '$' +
-              prod.product.price
+          .fontSize(18)
+          .text('This is a certifiate to prove that you are the owner of ' +
+            prod.product.title
           );
       });
-      pdfDoc.text('---');
-      pdfDoc.fontSize(20).text('Total Price: $' + totalPrice);
+      pdfDoc.text('------------------------');
+      pdfDoc.fontSize(14).text('And adoption fee: $' + totalPrice + ' has been paid');
 
       pdfDoc.end();
 
@@ -477,11 +532,70 @@ exports.getInvoice = (req, res, next) => {
 };
 
 exports.getTraining = (req, res, next) => {
+  
       res.render('shop/training', {
-        pageTitle: 'training',
-        path: '/training'
+        pageTitle: 'Pet Training',
+        path: '/training',
+       
+      });
+    }
+
+    exports.getSupport = (req, res, next) => {
+  
+      res.render('shop/support', {
+        pageTitle: 'Adoption Support',
+        path: '/support',
+       
       });
     }
 
 
 
+
+    exports.petFinder = async(req, res) => {
+      const page = +req.query.page || 1;
+      let totalItems;
+      let query = Product.find()
+      if (req.query.title != null && req.query.title != '') {
+        query = query.regex('title', new RegExp(req.query.title, 'i'))
+      }
+      if (req.query.species != null && req.query.species != '') {
+        query = query.regex('species', new RegExp(req.query.species, 'i'))
+      }
+      if (req.query.breed != null && req.query.breed != '') {
+        query = query.regex('breed', new RegExp(req.query.breed, 'i'))
+      }
+    
+    
+      Product.find()
+        .countDocuments()
+        .then(numProducts => {
+          totalItems = numProducts;
+          
+          return Product.find()
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        })
+        
+        try{
+            const products = await query.exec()
+            res.render('shop/pet-finder', {
+            prods: products,
+            pageTitle: 'Pet Finder',
+            path: '/pet-finder',
+            currentPage: page,
+            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            searchOptions: req.query
+          });
+        }
+         catch {
+          (err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+         
+        });
+    }};

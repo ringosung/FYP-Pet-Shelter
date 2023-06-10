@@ -9,6 +9,7 @@
         <% if (prods.length > 0) { %>
             <div class="grid">
                 <% for (let product of prods) { %>
+                    <% if (product.adoption == false) { %>
                     <article class="card product-item">
                         <header class="card__header">
                             <h1 class="product__title"><%= product.title %></h1>
@@ -46,6 +47,7 @@
                             <% } %>
                         </div>
                     </article>
+                    <% } %>
                 <% } %>
             </div>
             <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
