@@ -30,3 +30,10 @@
 .product__description {
     text-align: center;
 }
+
+.search__nav {
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+  }
+

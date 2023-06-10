@@ -6,33 +6,44 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main>
-                <form action="/products" method="GET">
-                    <div class="form-row">
-                        <div class="form-item">
-                          <label>Name</label>
-                          <input type="text" name="title" value="<%= searchOptions.title %>">
-                        </div>
-                      </div>
-                      <div class="form-row">
-                        <div class="form-item">
-                          <label>Species</label>
-                          <input type="text" name="species" value="<%= searchOptions.species %>">
-                        </div>
-                      <div class="form-row">
-                        <div class="form-item">
-                          <label>Breed</label>
-                          <input type="text" name="breed" value="<%= searchOptions.breed %>">
-                        </div>
-                        <div class="form-item">
-                            
-                            <input type="hidden" name="personality" value="<%= searchOptions.personality %>">
-                          </div>
-            
-                      </div>
-                      <div class="form-row form-row-end">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                      </div>
-                  </form>
+                <nav class="main-header__nav">
+                    <ul>
+                        <form action="/products" method="GET">
+                            <li>
+                                <div>
+                                    <label>Name</label>
+                                    <input type="text" name="title" value="<%= searchOptions.title %>">
+                                  </div>
+                            </li>
+                        </ul>
+                        <ul>
+
+                              <li>
+                                <div>
+                                    <label>Species</label>
+                                    <input type="text" name="species" value="<%= searchOptions.species %>">
+                                  </div>
+                              </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <div>                                  
+                                        <label>Breed</label>
+                                        <input type="text" name="breed" value="<%= searchOptions.breed %>">
+                                    </div>
+                                  </li>
+                            </ul>  
+                            <div>
+                                <input type="hidden" name="personality" value="<%= searchOptions.personality %>">                                        
+                            </div>
+                        </ul>
+                              <div class="form-row form-row-end">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                              </div>
+                          </form>
+                    
+                </nav>
+                <hr>
                 <% if (prods.length > 0) { %>
                     <div class="grid">
                         <% for (let product of prods) { %>
